@@ -1,0 +1,8 @@
+.characters {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.characters .character {
+  margin: 8px;
+}

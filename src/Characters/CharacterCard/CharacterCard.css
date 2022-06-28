@@ -11,3 +11,17 @@
 .character .gender {
   color: #aaa;
 }
+.character .fav-button {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+
+  border: 2px solid orange;
+
+  background: none;
+}
+
+.character .fav-button.active {
+  background: orange;
+}

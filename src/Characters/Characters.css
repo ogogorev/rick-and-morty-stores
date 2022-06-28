@@ -1,8 +1,26 @@
-.characters {
-  display: flex;
-  flex-wrap: wrap;
+.characters-page-container {
+  margin: 24px;
 }
 
-.characters .character {
-  margin: 8px;
+.tabs {
+  border-bottom: 2px solid #ddd;
+  margin: 12px 0;
+}
+
+.tabs button {
+  margin-right: 4px;
+  padding: 8px;
+
+  border: none;
+  border-radius: 4px 4px 0 0;
+  background: none;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #ddd;
 }
