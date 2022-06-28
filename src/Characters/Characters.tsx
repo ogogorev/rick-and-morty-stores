@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { CharacterCard } from "./CharacterCard";
+import { CharacterCard } from "./CharacterCard/CharacterCard";
 import { Character } from "./types";
+import "./Characters.css";
 
 const CHARACTERS_API = `https://rickandmortyapi.com/api/character`;
 
@@ -19,7 +20,7 @@ export const Characters = () => {
   }, []);
 
   return (
-    <div>
+    <div className="characters">
       {characters &&
         characters.length &&
         characters.map((character) => <CharacterCard character={character} />)}

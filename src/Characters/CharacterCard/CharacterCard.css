@@ -1,0 +1,13 @@
+.character {
+  background-color: #eee;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.character h2 {
+  margin: 8px 0 4px;
+}
+
+.character .gender {
+  color: #aaa;
+}
