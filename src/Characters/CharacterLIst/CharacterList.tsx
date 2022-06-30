@@ -5,7 +5,7 @@ import { CharacterCard } from "../CharacterCard/CharacterCard";
 import { Character } from "../types";
 
 type Props = {
-  characters?: Character[];
+  characters: Character[] | null;
   onFavChange: (id: number, fav: boolean) => void;
 };
 

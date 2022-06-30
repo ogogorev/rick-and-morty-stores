@@ -1,65 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useStore } from "effector-react";
 
 import "./Characters.css";
 
-import { isFav, markFavCharacters } from "./helpers";
-import { CHARACTERS_API } from "./consts";
-import { Character, Tab } from "./types";
 import { CharacterList } from "./CharacterLIst/CharacterList";
 import { Search } from "./Search/Search";
 
-const getCharacters = (search?: string) => {
-  const url = `${CHARACTERS_API}${search ? `/?name=${search}` : ``}`;
-  return fetch(url).then((res) => res.json());
-};
+import {
+  $characters,
+  $favCharacters,
+  $loading,
+  fetchCharactersFx,
+} from "./store/characters";
+import { favIdsChanged } from "./store/favIds";
+import { $tab, allTabSelected, favsTabSelected } from "./store/tab";
 
 export const Characters = () => {
-  const [favIds, setFavIds] = useState<number[]>([1, 3]);
+  const characters = useStore($characters);
+  const favCharacters = useStore($favCharacters);
+  const loading = useStore($loading);
 
-  const [characters, setCharacters] = useState<Character[]>();
-  const [loading, setLoading] = useState(false);
+  const tab = useStore($tab);
 
-  const loadCharacters = (search?: string) => {
-    setCharacters(undefined);
-    setLoading(true);
-
-    getCharacters(search)
-      .then(({ results }) => {
-        setCharacters(markFavCharacters(results, favIds));
-        setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  console.log({ characters });
 
   useEffect(() => {
-    loadCharacters();
+    fetchCharactersFx();
   }, []);
 
-  const favCharacters = characters?.filter(isFav);
-
   const handleFavChange = (id: number, fav: boolean) => {
-    const newFavIds = fav
-      ? [...favIds, id]
-      : favIds.filter((favId) => favId !== id);
-
-    characters && setCharacters(markFavCharacters(characters, newFavIds));
-    setFavIds(newFavIds);
+    favIdsChanged({ id, fav });
   };
 
-  const [tab, setTab] = useState<Tab>("all");
-
-  const selectTab = (tab: Tab) => {
-    setTab(tab);
+  const handleSearch = (searchTerm: string) => {
+    fetchCharactersFx(searchTerm);
   };
 
   const allTabActive = tab === "all";
   const favTabActive = tab === "favs";
-
-  const handleSearch = (searchTerm: string) => {
-    loadCharacters(searchTerm);
-  };
 
   return (
     <div className="characters-page-container">
@@ -68,13 +46,13 @@ export const Characters = () => {
       <div className="tabs">
         <button
           className={allTabActive ? "active" : ""}
-          onClick={() => selectTab("all")}
+          onClick={() => allTabSelected()}
         >
           All
         </button>
         <button
           className={favTabActive ? "active" : ""}
-          onClick={() => selectTab("favs")}
+          onClick={() => favsTabSelected()}
         >
           Favs
         </button>

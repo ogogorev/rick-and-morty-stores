@@ -1,13 +1,15 @@
 import { Character } from "./types";
 
 export const markFavCharacters = (
-  characters: Character[],
+  characters: Character[] | null,
   favIds: number[]
-) => {
-  return characters.map((character) => ({
-    ...character,
-    fav: favIds.includes(character.id),
-  }));
+): Character[] | null => {
+  return (
+    characters?.map((character) => ({
+      ...character,
+      fav: favIds.includes(character.id),
+    })) || null
+  );
 };
 
 export const isFav = (ch: Character) => ch.fav;
