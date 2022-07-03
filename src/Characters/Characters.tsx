@@ -10,6 +10,7 @@ import { $characters, $loading, fetchCharactersFx } from "./store/characters";
 import { favIdsChanged } from "./store/favIds";
 import { $tab, allTabSelected, favsTabSelected } from "./store/tab";
 import { $favCharacters } from "./store/favCharacters";
+import { searchChanged } from "./store/search";
 
 export const Characters = () => {
   const characters = useStore($characters);
@@ -29,7 +30,7 @@ export const Characters = () => {
   };
 
   const handleSearch = (searchTerm: string) => {
-    fetchCharactersFx(searchTerm);
+    searchChanged(searchTerm);
   };
 
   const allTabActive = tab === "all";

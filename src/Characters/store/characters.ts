@@ -1,16 +1,11 @@
-import { createStore, createEffect, combine } from "effector";
+import { createStore, createEffect, combine, sample } from "effector";
 
 import { getCharacters } from "../api/api";
 import { markFavCharacters } from "../helpers";
 import { Character } from "../types";
 import { $favIds } from "./favIds";
-
-/**
- * TODO:
- *
- * - Abstract requests into own store (or find a library)
- *
- */
+import { $search, searchChanged } from "./search";
+import { $tab, allTabSelected } from "./tab";
 
 const fetchCharactersFx = createEffect(getCharacters);
 
@@ -26,5 +21,13 @@ const $loading = createStore<boolean>(false);
 $loading
   .on(fetchCharactersFx, () => true)
   .on(fetchCharactersFx.finally, () => false);
+
+sample({
+  source: { tab: $tab, search: $search },
+  clock: [searchChanged, allTabSelected],
+  target: fetchCharactersFx,
+  filter: ({ tab }) => tab === "all",
+  fn: ({ search }) => search,
+});
 
 export { $characters, $loading, fetchCharactersFx };

@@ -1,19 +1,15 @@
-import { attach, createEffect, createStore, sample } from "effector";
+import { createEffect, createStore, sample } from "effector";
 import { getFavCharacters } from "../api/api";
 import { setCharacterFav } from "../helpers";
 import { Character } from "../types";
 import { $favIds, favIdsChanged } from "./favIds";
-import { favsTabSelected } from "./tab";
+import { $search, searchChanged } from "./search";
+import { $tab, favsTabSelected } from "./tab";
 
-// TODO: Replace fetchFavCharactersWithFavIdsFx effect with event to call from components
-
-const fetchFavCharactersWithFavIdsFx = createEffect(getFavCharacters);
-
-// TODO: Could be also done using sample
-const fetchFavCharactersFx = attach({
-  effect: fetchFavCharactersWithFavIdsFx,
-  source: $favIds,
-});
+const fetchFavCharactersFx = createEffect(
+  ({ favIds, search }: { favIds: number[]; search?: string }) =>
+    getFavCharacters(favIds, search)
+);
 
 const $favCharacters = createStore<Character[] | null>(null)
   .on(fetchFavCharactersFx, () => null)
@@ -36,6 +32,12 @@ const $favCharacters = createStore<Character[] | null>(null)
 
 // TODO: Add loading indicator for the request
 
-sample({ clock: favsTabSelected, target: fetchFavCharactersFx });
+sample({
+  source: { $search, $tab, $favIds },
+  clock: [favsTabSelected, searchChanged],
+  filter: ({ $tab }) => $tab === "favs",
+  fn: ({ $favIds, $search }) => ({ favIds: $favIds, search: $search }),
+  target: fetchFavCharactersFx,
+});
 
 export { $favCharacters, fetchFavCharactersFx };
