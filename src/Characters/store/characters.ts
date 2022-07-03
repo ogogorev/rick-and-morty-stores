@@ -1,7 +1,7 @@
 import { createStore, createEffect, combine } from "effector";
 
 import { getCharacters } from "../api/api";
-import { isFav, markFavCharacters } from "../helpers";
+import { markFavCharacters } from "../helpers";
 import { Character } from "../types";
 import { $favIds } from "./favIds";
 
@@ -22,13 +22,9 @@ $charactersRaw
 
 const $characters = combine($charactersRaw, $favIds, markFavCharacters);
 
-const $favCharacters = $characters.map(
-  (characters) => characters?.filter(isFav) || null
-);
-
 const $loading = createStore<boolean>(false);
 $loading
   .on(fetchCharactersFx, () => true)
   .on(fetchCharactersFx.finally, () => false);
 
-export { $characters, $favCharacters, $loading, fetchCharactersFx };
+export { $characters, $loading, fetchCharactersFx };

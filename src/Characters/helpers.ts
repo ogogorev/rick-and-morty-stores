@@ -5,11 +5,15 @@ export const markFavCharacters = (
   favIds: number[]
 ): Character[] | null => {
   return (
-    characters?.map((character) => ({
-      ...character,
-      fav: favIds.includes(character.id),
-    })) || null
+    characters?.map((character) =>
+      setCharacterFav(character, favIds.includes(character.id))
+    ) || null
   );
 };
+
+export const setCharacterFav = (character: Character, fav: boolean) => ({
+  ...character,
+  fav,
+});
 
 export const isFav = (ch: Character) => ch.fav;

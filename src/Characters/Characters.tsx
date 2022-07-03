@@ -6,14 +6,10 @@ import "./Characters.css";
 import { CharacterList } from "./CharacterLIst/CharacterList";
 import { Search } from "./Search/Search";
 
-import {
-  $characters,
-  $favCharacters,
-  $loading,
-  fetchCharactersFx,
-} from "./store/characters";
+import { $characters, $loading, fetchCharactersFx } from "./store/characters";
 import { favIdsChanged } from "./store/favIds";
 import { $tab, allTabSelected, favsTabSelected } from "./store/tab";
+import { $favCharacters } from "./store/favCharacters";
 
 export const Characters = () => {
   const characters = useStore($characters);
