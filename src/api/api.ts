@@ -1,4 +1,4 @@
-import { CHARACTERS_API } from "../consts";
+import { CHARACTERS_API } from "../Characters/consts";
 
 export const getCharacters = (search?: string) => {
   const url = `${CHARACTERS_API}${search ? `/?name=${search}` : ``}`;
